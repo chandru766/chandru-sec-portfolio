@@ -19,7 +19,10 @@ export function TerminalContact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    // Only scroll if the user has actually interacted with the terminal (history > 2)
+    if (history.length > 2) {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
   }, [history]);
 
   const handleCommand = (e: React.FormEvent) => {
