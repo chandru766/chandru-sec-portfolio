@@ -138,7 +138,6 @@ export function TerminalContact() {
                   onChange={(e) => setInput(e.target.value)}
                   className="flex-1 bg-transparent border-none outline-none text-white font-mono"
                   autoComplete="off"
-                  autoFocus
                 />
               </form>
             </div>
