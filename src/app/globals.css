@@ -1,26 +1,80 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --color-void-dark: #070A0F;
+  --color-void: #0A0E17;
+  --color-cyber-green: #00FF66;
+  --color-cyber-green-light: #00FF87;
+  --color-neon-cyan: #00E5FF;
+  --color-neon-cyan-light: #00F2FE;
+  --color-electric-purple: #A855F7;
+  --color-alert-red: #EF4444;
+  --color-slate-800: #1E293B;
+  --color-slate-700: #334155;
+  --color-slate-900: #111827;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --animate-pulse-fast: pulse-fast 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-marquee: marquee 25s linear infinite;
+  --animate-spotlight: spotlight 2s ease .75s 1 forwards;
+  --animate-scanline: scanline 8s linear infinite;
+  --animate-crt-flicker: crt-flicker 0.15s infinite;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @keyframes pulse-fast {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  @keyframes spotlight {
+    0% {
+      opacity: 0;
+      transform: translate(-72%, -62%) scale(0.5);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%,-40%) scale(1);
+    }
+  }
+
+  @keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(1000%); }
+  }
+
+  @keyframes crt-flicker {
+    0% { opacity: 0.95; }
+    50% { opacity: 0.85; }
+    100% { opacity: 0.95; }
   }
 }
 
+:root {
+  --background: var(--color-void);
+  --foreground: #e2e8f0;
+}
+
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom component classes */
+@layer components {
+  .glass-panel {
+    background-color: rgba(7, 10, 15, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--color-slate-800);
+    box-shadow: 0 0 15px rgba(0, 255, 102, 0.1);
+  }
+  
+  .cyber-card-clip {
+    clip-path: polygon(5% 0, 100% 0, 100% 95%, 95% 100%, 0 100%, 0 5%);
+    transition: clip-path 0.3s ease;
+  }
 }
