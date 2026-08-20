@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { CyberBackground } from "@/components/CyberBackground";
 
 const inter = Inter({
   variable: "--font-geist-sans",
@@ -29,10 +30,13 @@ export default function RootLayout({
         className={cn(
           inter.variable,
           jetbrainsMono.variable,
-          "antialiased bg-void"
+          "antialiased bg-transparent relative"
         )}
       >
-        {children}
+        <CyberBackground />
+        <div className="relative z-10 flex flex-col min-h-screen">
+          {children}
+        </div>
       </body>
     </html>
   );

@@ -1,9 +1,8 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { GraduationCap, Award, Briefcase } from "lucide-react";
+import { GraduationCap, Briefcase } from "lucide-react";
 import { DecodedText } from "@/components/ui/DecodedText";
-import { MagneticHover } from "@/components/ui/MagneticHover";
 
 const timelineData = [
   {
@@ -11,127 +10,64 @@ const timelineData = [
     year: "2023 – 2026",
     title: "B.E. in Information Science and Engineering",
     institution: "P.E.S. College of Engineering, Mandya",
-    icon: <GraduationCap className="w-5 h-5 text-neon-cyan" />
+    icon: <GraduationCap className="w-5 h-5 text-cyan-400" />
   },
   {
     type: "education",
     year: "2021 – 2023",
     title: "Diploma in Computer Science and Engineering",
     institution: "JSS Polytechnic, Nanjangud",
-    icon: <GraduationCap className="w-5 h-5 text-neon-cyan" />
-  }
-];
-
-const certData = [
-  {
-    title: "CSA: Certified SOC Analyst",
-    issuer: "RedTeam Hacker Academy",
-    status: "Active",
-  },
-  {
-    title: "CPT v4: Certified Penetration Tester",
-    issuer: "RedTeam Hacker Academy",
-    status: "Active",
-  },
-  {
-    title: "Ethical Hacker",
-    issuer: "Cisco Networking Academy",
-    status: "Active",
-  },
-  {
-    title: "CEH: Certified Ethical Hacker",
-    issuer: "EC-Council",
-    status: "In Progress",
+    icon: <GraduationCap className="w-5 h-5 text-cyan-400" />
   }
 ];
 
 export function Timeline() {
   return (
-    <section id="timeline" className="py-24 bg-void relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Timeline Section */}
-          <div>
+    <section id="timeline" className="py-24 bg-[#090d16] relative border-t border-slate-900">
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-16 text-center"
+        >
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 flex items-center justify-center">
+            <Briefcase className="w-8 h-8 text-cyan-400 mr-4" />
+            <DecodedText text="Academic Timeline" />
+          </h2>
+          <p className="text-slate-400 text-lg">
+            My foundational journey through computer science and engineering.
+          </p>
+        </motion.div>
+
+        <div className="relative border-l-2 border-slate-800 ml-4 md:ml-12">
+          {/* Glowing data stream */}
+          <motion.div 
+            animate={{ top: ["0%", "100%"], opacity: [0, 1, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+            className="absolute left-[-2px] w-[2px] h-32 bg-gradient-to-b from-transparent via-cyan-400 to-transparent z-0"
+          />
+          {timelineData.map((item, index) => (
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="mb-12"
+              transition={{ delay: index * 0.2 }}
+              key={index} 
+              className="mb-12 ml-10 relative group"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-2 flex items-center">
-                <Briefcase className="w-8 h-8 text-cyber-green mr-4" />
-                <DecodedText text="Career & Education" />
-              </h2>
+              <div className="absolute -left-[51px] top-1 bg-[#090d16] border border-slate-700 group-hover:border-cyan-400 p-2 rounded-full z-10 transition-colors">
+                {item.icon}
+              </div>
+              <div className="bg-[#0B101B]/80 backdrop-blur-xl p-6 md:p-8 rounded-2xl border border-slate-800 hover:border-cyan-500/40 hover:shadow-[0_0_20px_rgba(0,229,255,0.1)] transition-all">
+                <span className="font-mono text-cyan-400 text-sm mb-2 block tracking-widest">{item.year}</span>
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-2">{item.title}</h3>
+                <p className="text-slate-400">{item.institution}</p>
+              </div>
             </motion.div>
-
-            <div className="relative border-l border-slate-700 ml-4">
-              {/* Glowing data stream */}
-              <motion.div 
-                animate={{ top: ["0%", "100%"], opacity: [0, 1, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                className="absolute left-[-1px] w-[2px] h-16 bg-gradient-to-b from-transparent via-cyber-green to-transparent z-0"
-              />
-              {timelineData.map((item, index) => (
-                <motion.div 
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
-                  key={index} 
-                  className="mb-10 ml-8 relative"
-                >
-                  <div className="absolute -left-[41px] top-1 bg-slate-900 border border-slate-700 p-1.5 rounded-full z-10">
-                    {item.icon}
-                  </div>
-                  <div className="glass-panel p-6 rounded-lg hover:border-neon-cyan/50 transition-colors">
-                    <span className="font-mono text-neon-cyan text-sm mb-2 block">{item.year}</span>
-                    <h3 className="text-xl font-bold text-white">{item.title}</h3>
-                    <p className="text-neutral-400 mt-2">{item.institution}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Certifications Section */}
-          <div>
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="mb-12"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-2 flex items-center">
-                <Award className="w-8 h-8 text-alert-red mr-4" />
-                <DecodedText text="Accreditations" />
-              </h2>
-            </motion.div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {certData.map((cert, index) => (
-                <MagneticHover key={index} className="h-full w-full block">
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className="glass-panel p-5 rounded-lg border border-slate-700/50 hover:border-alert-red/50 transition-all flex flex-col justify-between h-full group w-full"
-                  >
-                  <div>
-                    <h3 className="text-lg font-bold text-white mb-1 leading-tight">{cert.title}</h3>
-                    <p className="text-sm text-neutral-400">{cert.issuer}</p>
-                  </div>
-                  <div className="mt-4 flex items-center">
-                    <div className={`w-2 h-2 rounded-full mr-2 ${cert.status === "Active" ? "bg-cyber-green animate-pulse-fast" : "bg-electric-purple"}`}></div>
-                    <span className={`text-xs font-mono ${cert.status === "Active" ? "text-cyber-green" : "text-electric-purple"}`}>
-                      {cert.status.toUpperCase()}
-                    </span>
-                  </div>
-                  </motion.div>
-                </MagneticHover>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
