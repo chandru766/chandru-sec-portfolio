@@ -97,7 +97,7 @@ export function Hero() {
           </div>
 
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400 tracking-tight leading-tight max-w-5xl">
-            Securing the Digital Perimeter with Precision & Offensive Insight.
+            AI Security & Cyber Defense <br className="hidden md:block" /> with Offensive Precision & Threat Intelligence.
           </h1>
 
           <p className="mt-6 font-normal text-base md:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
