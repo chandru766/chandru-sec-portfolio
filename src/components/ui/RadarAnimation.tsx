@@ -4,13 +4,18 @@ import { motion } from "framer-motion";
 import { Activity, Network, ShieldCheck, Bug, Server, Fingerprint, Lock, Database, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const IconWrapper = ({ icon: Icon, label, className }: { icon: any, label: string, className?: string }) => (
-  <div className={cn("flex flex-col items-center justify-center gap-2", className)}>
-    <div className="bg-[#0f1522] border border-slate-800 p-4 rounded-2xl shadow-[0_0_15px_rgba(0,0,0,0.5)]">
-      <Icon className="w-6 h-6 text-slate-300" strokeWidth={1.5} />
+const IconWrapper = ({ icon: Icon, label, className, delay = 0 }: { icon: any, label: string, className?: string, delay?: number }) => (
+  <motion.div 
+    animate={{ y: [0, -8, 0] }}
+    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay }}
+    className={cn("flex flex-col items-center justify-center gap-2 group cursor-pointer", className)}
+  >
+    <div className="bg-[#0f1522] border border-slate-800 p-4 rounded-2xl shadow-[0_0_15px_rgba(0,0,0,0.5)] group-hover:border-cyan-500/50 group-hover:shadow-[0_0_20px_rgba(0,229,255,0.3)] transition-all duration-300 relative overflow-hidden">
+      <div className="absolute inset-0 bg-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <Icon className="w-6 h-6 text-slate-300 group-hover:text-cyan-400 group-hover:scale-110 transition-all duration-300 relative z-10" strokeWidth={1.5} />
     </div>
-    <span className="text-xs font-semibold text-slate-400 whitespace-nowrap">{label}</span>
-  </div>
+    <span className="text-xs font-semibold text-slate-400 whitespace-nowrap group-hover:text-cyan-300 transition-colors duration-300">{label}</span>
+  </motion.div>
 );
 
 export function RadarAnimation() {
@@ -59,48 +64,49 @@ export function RadarAnimation() {
         {/* Icons */}
         
         {/* Left Outer */}
+        {/* Left Outer */}
         <div className="absolute -left-[40px] top-[40px]">
-          <IconWrapper icon={Activity} label="SOC Monitoring" />
+          <IconWrapper icon={Activity} label="SOC Monitoring" delay={0.5} />
         </div>
         
         {/* Left Bottom (Web Security) */}
         <div className="absolute left-[120px] top-[300px]">
-          <IconWrapper icon={Globe} label="Web Security" />
+          <IconWrapper icon={Globe} label="Web Security" delay={1.2} />
         </div>
         
         {/* Left Middle */}
         <div className="absolute left-[40px] top-[180px]">
-          <IconWrapper icon={Network} label="Network Security" />
+          <IconWrapper icon={Network} label="Network Security" delay={0.8} />
         </div>
 
         {/* Arc Inner Left */}
         <div className="absolute left-[200px] top-[120px]">
-          <IconWrapper icon={ShieldCheck} label="Incident Response" />
+          <IconWrapper icon={ShieldCheck} label="Incident Response" delay={0.2} />
         </div>
 
         {/* Top Center */}
         <div className="absolute left-1/2 -translate-x-1/2 -top-[20px]">
-          <IconWrapper icon={Bug} label="Threat Detection" />
+          <IconWrapper icon={Bug} label="Threat Detection" delay={1.5} />
         </div>
 
         {/* Bottom Center */}
         <div className="absolute left-1/2 -translate-x-1/2 bottom-[40px]">
-          <IconWrapper icon={Server} label="Server Hardening" />
+          <IconWrapper icon={Server} label="Server Hardening" delay={2.1} />
         </div>
 
         {/* Arc Inner Right */}
         <div className="absolute right-[200px] top-[120px]">
-          <IconWrapper icon={Fingerprint} label="IAM Security" />
+          <IconWrapper icon={Fingerprint} label="IAM Security" delay={0.9} />
         </div>
 
         {/* Right Outer Top */}
         <div className="absolute -right-[40px] top-[40px]">
-          <IconWrapper icon={Lock} label="Access Control" />
+          <IconWrapper icon={Lock} label="Access Control" delay={1.8} />
         </div>
 
         {/* Right Middle */}
         <div className="absolute right-[40px] top-[180px]">
-          <IconWrapper icon={Database} label="SIEM Logs" />
+          <IconWrapper icon={Database} label="SIEM Logs" delay={0.4} />
         </div>
 
         </div>
