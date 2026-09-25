@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Terminal, ShieldAlert, Network, Globe, Code } from "lucide-react";
+import { X, Terminal, ShieldAlert, Network, Globe, Code, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DecodedText } from "@/components/ui/DecodedText";
 import { MagneticHover } from "@/components/ui/MagneticHover";
@@ -75,6 +75,29 @@ const bentoCards: BentoCard[] = [
     expandedData: [
       { category: "Automation & Scripting", items: ["Python", "PowerShell", "Bash", "SQL"] },
       { category: "Systems & Infrastructure", items: ["Kali Linux", "Windows Server/AD", "Docker", "VirtualBox/VMware"] }
+    ]
+  },
+  {
+    id: "ai-security",
+    title: "AI Security",
+    icon: <Bot className="w-6 h-6 text-amber-400" />,
+    titleColor: "text-amber-400",
+    colSpan: "col-span-1 md:col-span-12",
+    badges: ["LLM Security", "Prompt Injection", "AI Threat Modeling", "Adversarial Testing"],
+    expandable: true,
+    expandedData: [
+      { 
+        category: "Core Skills", 
+        items: ["LLM Security", "Prompt Injection", "AI Threat Modeling", "AI Red Teaming", "Adversarial Testing", "RAG Security", "AI App Security", "AI Risk Assessment"] 
+      },
+      { 
+        category: "Frameworks", 
+        items: ["OWASP Top 10 for LLM", "MITRE ATLAS", "NIST AI RMF"] 
+      },
+      { 
+        category: "Security Integration", 
+        items: ["Threat Hunting", "Vulnerability Assessment", "Web App Security", "SIEM & Log Analysis", "Security Automation"] 
+      }
     ]
   }
 ];

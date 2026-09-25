@@ -17,10 +17,11 @@ export function Navbar() {
   }, []);
 
   const navLinks = [
+    { label: "About", href: "#about" },
     { label: "Work", href: "#missions" },
     { label: "Arsenal", href: "#arsenal" },
     { label: "Certs", href: "#certifications" },
-    { label: "About", href: "#timeline" },
+    { label: "Education", href: "#timeline" },
   ];
 
   return (

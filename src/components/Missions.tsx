@@ -7,7 +7,7 @@ import { ArchitectureBox } from "@/components/ui/ArchitectureBox";
 
 export function Missions() {
   return (
-    <section id="missions" className="py-24 bg-transparent relative border-t border-slate-900 overflow-hidden z-10">
+    <section id="missions" className="pt-12 pb-24 bg-transparent relative border-t border-slate-900 overflow-hidden z-10">
       {/* Dynamic Background Elements */}
       <div className="absolute inset-0 cyber-grid opacity-20 pointer-events-none"></div>
       

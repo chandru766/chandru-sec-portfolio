@@ -1,7 +1,10 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { Download, Crosshair } from "lucide-react";
+import { Download, Crosshair, ShieldCheck } from "lucide-react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { SiTryhackme } from "react-icons/si";
 import confetti from "canvas-confetti";
 import { cn } from "@/lib/utils";
 import { DecodedText } from "@/components/ui/DecodedText";
@@ -75,10 +78,54 @@ export function Hero() {
   };
 
   return (
-    <div className="relative w-full flex flex-col items-center justify-start bg-transparent overflow-hidden pt-24 md:pt-28">
+    <div className="relative w-full flex flex-col items-center justify-start bg-transparent overflow-hidden pt-20 md:pt-24">
       <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" />
 
       <div className="px-4 pt-4 pb-0 max-w-7xl mx-auto relative z-10 w-full flex flex-col justify-start items-center text-center">
+        
+        {/* Animated Platforms on the Left */}
+        <motion.div
+          animate={{ y: [0, 15, 0], rotate: [0, -2, 2, 0] }}
+          transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+          className="absolute left-0 top-40 lg:left-8 lg:top-72 hidden lg:flex flex-col gap-12 items-center justify-center z-20"
+        >
+          <a 
+            href="https://tryhackme.com/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            title="TryHackMe"
+            className="p-4 rounded-2xl bg-[#06090e]/80 border border-slate-700/80 hover:border-cyan-500/50 hover:bg-slate-800/80 hover:shadow-[0_0_20px_rgba(0,229,255,0.2)] transition-all group backdrop-blur-xl translate-x-12"
+          >
+            <SiTryhackme className="w-10 h-10 text-slate-300 group-hover:text-cyan-400 group-hover:scale-110 transition-all duration-300" />
+          </a>
+          
+          <a 
+            href="https://app.letsdefend.io/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            title="LetsDefend" 
+            className="p-4 rounded-2xl bg-[#06090e]/80 border border-slate-700/80 hover:border-blue-500/50 hover:bg-slate-800/80 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] transition-all group backdrop-blur-xl flex flex-col items-center justify-center -translate-x-8"
+          >
+            <ShieldCheck className="w-10 h-10 text-slate-300 group-hover:text-blue-400 group-hover:scale-110 transition-all duration-300" />
+          </a>
+        </motion.div>
+
+        {/* Animated Robot on the Right */}
+        <motion.div
+          animate={{ y: [0, -15, 0], rotate: [0, 2, -2, 0] }}
+          transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
+          className="absolute -right-4 top-40 lg:right-4 lg:top-72 hidden lg:flex items-center justify-center z-20"
+        >
+          <Image 
+            src="/hello-robot.png" 
+            alt="Hello Robot" 
+            width={400} 
+            height={300} 
+            className="w-48 h-auto md:w-[280px] md:h-auto object-contain drop-shadow-[0_0_15px_rgba(0,229,255,0.4)] transition-transform hover:scale-105"
+            priority
+          />
+        </motion.div>
+        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -109,29 +156,61 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.5 }}
-          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="mt-10 flex flex-col items-center justify-center gap-6 w-full"
         >
-          <MagneticHover>
-            <a
-              href="#missions"
-              className="w-full sm:w-auto px-8 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all flex items-center justify-center transform hover:-translate-y-1"
+          {/* Social Links Row */}
+          <motion.div 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.4, ease: "easeOut" }}
+            className="flex flex-row flex-wrap items-center justify-center gap-4"
+          >
+            <a 
+              href="https://github.com/chandru766" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="relative flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900/40 border border-slate-800/80 text-slate-300 text-sm font-medium hover:text-white hover:border-cyan-500/50 hover:bg-slate-800/60 hover:shadow-[0_0_15px_rgba(0,229,255,0.2)] hover:-translate-y-[2px] transition-all duration-300 group overflow-hidden"
             >
-              View Missions
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out"></div>
+              <FaGithub className="w-5 h-5 text-slate-400 group-hover:text-cyan-400 group-hover:scale-110 transition-all duration-300" />
+              <span>GitHub</span>
             </a>
-          </MagneticHover>
+            <a 
+              href="https://www.linkedin.com/in/chandrasekarcyber/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="relative flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900/40 border border-slate-800/80 text-slate-300 text-sm font-medium hover:text-white hover:border-cyan-500/50 hover:bg-slate-800/60 hover:shadow-[0_0_15px_rgba(0,229,255,0.2)] hover:-translate-y-[2px] transition-all duration-300 group overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out"></div>
+              <FaLinkedin className="w-5 h-5 text-slate-400 group-hover:text-cyan-400 group-hover:scale-110 transition-all duration-300" />
+              <span>LinkedIn</span>
+            </a>
+          </motion.div>
 
-          <MagneticHover>
-            <a
-              href="https://drive.google.com/file/d/1TsaISwPHkKabw0wxWjyAY43sPe5Dtv5f/view?usp=drive_link"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={handleDownload}
-              className="w-full sm:w-auto px-8 py-3 rounded-full border border-slate-700 hover:border-cyan-400 text-white font-semibold transition-all hover:bg-slate-800/50 flex items-center justify-center group"
-            >
-              <Download className="w-4 h-4 mr-2 group-hover:text-cyan-400 transition-colors" />
-              Download Resume
-            </a>
-          </MagneticHover>
+          {/* Main CTAs Row */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
+            <MagneticHover>
+              <a
+                href="#missions"
+                className="w-full sm:w-auto px-8 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-semibold hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all flex items-center justify-center transform hover:-translate-y-1"
+              >
+                View Missions
+              </a>
+            </MagneticHover>
+
+            <MagneticHover>
+              <a
+                href="https://drive.google.com/file/d/1TsaISwPHkKabw0wxWjyAY43sPe5Dtv5f/view?usp=drive_link"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={handleDownload}
+                className="w-full sm:w-auto px-8 py-3 rounded-full border border-slate-700 hover:border-cyan-400 text-white font-semibold transition-all hover:bg-slate-800/50 flex items-center justify-center group"
+              >
+                <Download className="w-4 h-4 mr-2 group-hover:text-cyan-400 transition-colors" />
+                Download Resume
+              </a>
+            </MagneticHover>
+          </div>
         </motion.div>
 
         {/* Radar Animation Injection */}

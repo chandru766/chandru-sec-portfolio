@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Shield, Award, CheckCircle, Clock } from "lucide-react";
+import { Shield, Award, CheckCircle, Clock, Network } from "lucide-react";
 import { DecodedText } from "@/components/ui/DecodedText";
 import { MagneticHover } from "@/components/ui/MagneticHover";
 import { cn } from "@/lib/utils";
@@ -10,7 +10,7 @@ const certs = [
   {
     id: "csa",
     title: "Certified SOC Analyst (CSA)",
-    issuer: "RedTeam Hacker Academy",
+    issuer: "EC-Council (2026)",
     status: "VALIDATED",
     icon: <Shield className="w-6 h-6" />,
     color: "text-emerald-400",
@@ -20,7 +20,7 @@ const certs = [
   {
     id: "cpt",
     title: "Certified Penetration Tester (CPT v4)",
-    issuer: "RedTeam Hacker Academy",
+    issuer: "RedTeam Hacker Academy (2026)",
     status: "VALIDATED",
     icon: <Award className="w-6 h-6" />,
     color: "text-purple-400",
@@ -30,7 +30,7 @@ const certs = [
   {
     id: "eh",
     title: "Ethical Hacker",
-    issuer: "Cisco Networking Academy",
+    issuer: "Cisco Networking Academy (2026)",
     status: "VALIDATED",
     icon: <CheckCircle className="w-6 h-6" />,
     color: "text-cyan-400",
@@ -38,14 +38,24 @@ const certs = [
     bg: "bg-cyan-500/10"
   },
   {
-    id: "ceh",
-    title: "Certified Ethical Hacker (CEH)",
-    issuer: "In Progress / Pursuing",
+    id: "comptia",
+    title: "CompTIA Security+",
+    issuer: "CompTIA (Pursuing 2026)",
     status: "IN PROGRESS",
     icon: <Clock className="w-6 h-6" />,
     color: "text-amber-400",
     border: "border-amber-500/30",
     bg: "bg-amber-500/10"
+  },
+  {
+    id: "network",
+    title: "Network Basic",
+    issuer: "Cisco Networking Academy (2026)",
+    status: "VALIDATED",
+    icon: <Network className="w-6 h-6" />,
+    color: "text-blue-400",
+    border: "border-blue-500/30",
+    bg: "bg-blue-500/10"
   }
 ];
 

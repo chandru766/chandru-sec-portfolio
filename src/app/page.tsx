@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Missions } from "@/components/Missions";
+import { About } from "@/components/About";
 import { Arsenal } from "@/components/Arsenal";
 import { Timeline } from "@/components/Timeline";
 import { Certifications } from "@/components/Certifications";
@@ -19,6 +20,7 @@ export default function Home() {
     <main className="min-h-screen bg-void selection:bg-cyber-green selection:text-black">
       <Navbar />
       <Hero />
+      <About />
       <Missions />
       <Arsenal />
       <Certifications />
