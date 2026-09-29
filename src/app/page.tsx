@@ -8,6 +8,7 @@ import { Arsenal } from "@/components/Arsenal";
 import { Timeline } from "@/components/Timeline";
 import { Certifications } from "@/components/Certifications";
 import { TerminalContact } from "@/components/TerminalContact";
+import { Chatbot } from "@/components/Chatbot";
 
 export default function Home() {
   useEffect(() => {
@@ -26,6 +27,7 @@ export default function Home() {
       <Certifications />
       <Timeline />
       <TerminalContact />
+      <Chatbot />
     </main>
   );
 }
