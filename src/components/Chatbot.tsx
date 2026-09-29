@@ -4,11 +4,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, User } from "lucide-react";
 import Image from "next/image";
 
+type MessageAction = "github" | "linkedin" | "resume" | "portfolio";
+
 type Message = {
   id: string;
   text: string;
   isBot: boolean;
   typingCompleted?: boolean;
+  action?: MessageAction;
+};
+
+const portfolioLinks = {
+  github: "https://github.com/chandru766",
+  linkedin: "https://www.linkedin.com/in/chandrasekarcyber/",
+  resume: "/Chandrasekar_Resume.pdf", // Update this with the actual resume path if needed
+  portfolio: window.location.origin
 };
 
 const renderFormattedText = (text: string) => {
@@ -47,9 +57,19 @@ export function Chatbot() {
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const quickActions = [
-    "👨💻 About Me", "🛡️ Skills", "🚨 SOC", "⚔️ VAPT", "🤖 AI Security", 
-    "🧪 Projects", "🎓 Certifications", "💻 GitHub", "📄 Resume", "📩 Contact"
+  const quickActions: { label: string; type: "chat" | "link"; linkKey?: MessageAction }[] = [
+    { label: "👨💻 About Me", type: "chat" },
+    { label: "🛡️ Skills", type: "chat" },
+    { label: "🚨 SOC", type: "chat" },
+    { label: "⚔️ VAPT", type: "chat" },
+    { label: "🤖 AI Security", type: "chat" },
+    { label: "🧪 Projects", type: "chat" },
+    { label: "🎓 Certifications", type: "chat" },
+    { label: "💻 GitHub", type: "link", linkKey: "github" },
+    { label: "🔗 LinkedIn", type: "link", linkKey: "linkedin" },
+    { label: "📄 Resume", type: "link", linkKey: "resume" },
+    { label: "🌐 Portfolio", type: "link", linkKey: "portfolio" },
+    { label: "📩 Contact", type: "chat" }
   ];
 
   const scrollToBottom = () => {
@@ -96,89 +116,92 @@ export function Chatbot() {
     // Simulate thinking delay
     setTimeout(() => {
       setIsThinking(false);
-      const response = getBotResponse(text);
-      const botMessage = { id: (Date.now() + 1).toString(), text: response, isBot: true, typingCompleted: false };
+      const { text: responseText, action } = getBotResponse(text);
+      const botMessage = { id: (Date.now() + 1).toString(), text: responseText, isBot: true, typingCompleted: false, action };
       setMessages(prev => [...prev, botMessage]);
     }, 1200);
   };
 
   // Removed speak function
 
-  const getBotResponse = (query: string): string => {
+  const getBotResponse = (query: string): { text: string; action?: MessageAction } => {
     const q = query.toLowerCase();
     
     // About Me
     if (q.includes("about") || q.includes("who is") || q.includes("introduce")) {
-      return "Chandrasekar L is a cybersecurity-focused professional with training and hands-on lab experience across SOC operations, VAPT, network security, and web application security.\n\nHis technical work includes security monitoring, vulnerability assessment, incident investigation, and tools such as Wazuh, Splunk, Nmap, Wireshark, Burp Suite, and Metasploit.\n\nHe is also currently expanding his focus into **AI Security**, particularly LLM Security, Prompt Injection, RAG Security, and AI Red Teaming.";
+      return { text: "Chandrasekar L is a cybersecurity-focused professional with training and hands-on lab experience across SOC operations, VAPT, network security, and web application security.\n\nHis technical work includes security monitoring, vulnerability assessment, incident investigation, and tools such as Wazuh, Splunk, Nmap, Wireshark, Burp Suite, and Metasploit.\n\nHe is also currently expanding his focus into **AI Security**, particularly LLM Security, Prompt Injection, RAG Security, and AI Red Teaming." };
     }
 
     // Skills
     if (q.includes("skill") || q.includes("tool") || q.includes("tech") || q.includes("stack")) {
-      return "**SOC & Security Operations**\n- Security Monitoring\n- Alert Triage\n- Log Analysis\n- Threat Detection\n- Incident Response\n- IOC Analysis\n\n**VAPT & Web Security**\n- Vulnerability Assessment\n- Penetration Testing\n- SQL Injection\n- XSS\n- IDOR\n- BOLA\n- Broken Access Control\n\n**Security Tools**\n- Wazuh\n- Splunk\n- Nmap\n- Wireshark\n- Burp Suite\n- Metasploit\n- Nessus\n- Microsoft Sentinel\n\n**AI Security**\n- LLM Security\n- Prompt Injection\n- RAG Security\n- AI Red Teaming\n- LLM Application Security";
+      return { text: "**SOC & Security Operations**\n- Security Monitoring\n- Alert Triage\n- Log Analysis\n- Threat Detection\n- Incident Response\n- IOC Analysis\n\n**VAPT & Web Security**\n- Vulnerability Assessment\n- Penetration Testing\n- SQL Injection\n- XSS\n- IDOR\n- BOLA\n- Broken Access Control\n\n**Security Tools**\n- Wazuh\n- Splunk\n- Nmap\n- Wireshark\n- Burp Suite\n- Metasploit\n- Nessus\n- Microsoft Sentinel\n\n**AI Security**\n- LLM Security\n- Prompt Injection\n- RAG Security\n- AI Red Teaming\n- LLM Application Security" };
     }
 
     // SOC
     if (q.includes("soc") || q.includes("incident") || q.includes("monitoring")) {
-      return "Chandrasekar's SOC knowledge covers Security Monitoring, Alert Triage, Log Analysis, Threat Detection, and Incident Response. He is trained in utilizing SIEM tools such as Wazuh, Splunk, Microsoft Sentinel, and the ELK Stack to analyze IOCs and perform incident investigations using MITRE ATT&CK frameworks.";
+      return { text: "Chandrasekar's SOC knowledge covers Security Monitoring, Alert Triage, Log Analysis, Threat Detection, and Incident Response. He is trained in utilizing SIEM tools such as Wazuh, Splunk, Microsoft Sentinel, and the ELK Stack to analyze IOCs and perform incident investigations using MITRE ATT&CK frameworks." };
     }
 
     // VAPT / Web Sec
     if (q.includes("vapt") || q.includes("web") || q.includes("sql") || q.includes("xss") || q.includes("penetration")) {
-      return "His VAPT expertise encompasses Reconnaissance, Port Scanning, Enumeration, Exploitation, and Privilege Escalation. In Web Application Security, he has practical lab experience identifying vulnerabilities like SQL Injection, XSS, IDOR, BOLA, CSRF, SSRF, and Broken Access Control based on the OWASP Top 10.";
+      return { text: "His VAPT expertise encompasses Reconnaissance, Port Scanning, Enumeration, Exploitation, and Privilege Escalation. In Web Application Security, he has practical lab experience identifying vulnerabilities like SQL Injection, XSS, IDOR, BOLA, CSRF, SSRF, and Broken Access Control based on the OWASP Top 10." };
     }
 
     // AI Security
     if (q.includes("ai") || q.includes("llm") || q.includes("prompt") || q.includes("rag") || q.includes("red team")) {
-      return "Chandrasekar is currently developing his AI Security skill set alongside his cybersecurity background.\n\nHis current focus includes:\n- LLM fundamentals\n- Prompt Injection\n- Jailbreaks\n- RAG Security\n- Data Leakage\n- LLM Application Security\n- AI Red Teaming\n- AI Security Testing\n\nHe is also building practical projects to apply these concepts in controlled environments.";
+      return { text: "Chandrasekar is currently developing his AI Security skill set alongside his cybersecurity background.\n\nHis current focus includes:\n- LLM fundamentals\n- Prompt Injection\n- Jailbreaks\n- RAG Security\n- Data Leakage\n- LLM Application Security\n- AI Red Teaming\n- AI Security Testing\n\nHe is also building practical projects to apply these concepts in controlled environments." };
     }
 
     // Projects
     if (q.includes("project") || q.includes("lab") || q.includes("work")) {
-      return "**LLM Security Testing Lab**\n**Objective:** A controlled environment for studying security issues in LLM applications.\n**Security Focus:** Prompt Injection, Jailbreaks, RAG Security, Data Leakage.\n**Status:** Learning / Building\n\n**AI SOC Analyst**\n**Objective:** An AI-powered assistant designed to analyze security logs and assist with investigations.\n**Status:** Project / Development\n\n**DVWA Security Lab**\n**Objective:** Practice web application security testing.\n**Technologies:** Kali Linux, DVWA, Burp Suite, SQLMap, Wazuh.\n\n**Wazuh Home SOC Lab**\n**Objective:** Build a home security monitoring environment focusing on log collection and threat detection.";
+      return { text: "**LLM Security Testing Lab**\n**Objective:** A controlled environment for studying security issues in LLM applications.\n**Security Focus:** Prompt Injection, Jailbreaks, RAG Security, Data Leakage.\n**Status:** Learning / Building\n\n**AI SOC Analyst**\n**Objective:** An AI-powered assistant designed to analyze security logs and assist with investigations.\n**Status:** Project / Development\n\n**DVWA Security Lab**\n**Objective:** Practice web application security testing.\n**Technologies:** Kali Linux, DVWA, Burp Suite, SQLMap, Wazuh.\n\n**Wazuh Home SOC Lab**\n**Objective:** Build a home security monitoring environment focusing on log collection and threat detection." };
     }
 
     // Education
     if (q.includes("education") || q.includes("degree") || q.includes("college") || q.includes("university")) {
-      return "**Bachelor of Engineering (B.E.)**\nBranch: Information Science and Engineering\nCollege: P.E.S College of Engineering, Mandya\nGraduation Year: 2026\n\n**Diploma**\nInstitution: JSS Polytechnic, Nanjangud\nPeriod: 2020–2023";
+      return { text: "**Bachelor of Engineering (B.E.)**\nBranch: Information Science and Engineering\nCollege: P.E.S College of Engineering, Mandya\nGraduation Year: 2026\n\n**Diploma**\nInstitution: JSS Polytechnic, Nanjangud\nPeriod: 2020–2023" };
     }
 
     // Certifications
     if (q.includes("cert") || q.includes("training") || q.includes("csa") || q.includes("cpt")) {
-      return "**Completed**\n- Certified Penetration Tester v4 (CPTv4) — RedTeam Hacker Academy\n- Certified SOC Analyst (CSA) — RedTeam Hacker Academy\n- Microsoft Learn – AI Security Fundamentals\n\n**Currently Pursuing**\n- CompTIA Security+";
+      return { text: "**Completed**\n- Certified Penetration Tester v4 (CPTv4) — RedTeam Hacker Academy\n- Certified SOC Analyst (CSA) — RedTeam Hacker Academy\n- Microsoft Learn – AI Security Fundamentals\n\n**Currently Pursuing**\n- CompTIA Security+" };
     }
 
     // Experience
     if (q.includes("experience") || q.includes("job")) {
-      return "**Security Analyst**\nRedTeam Hacker Academy\n**Period:** May 2026 – Aug 2026\n**Key Activities:**\n- Analyzed 500+ log events weekly\n- Triaged 50+ critical alerts\n- Analyzed 10+ GB of network traffic using Wireshark\n- Escalated 15+ high-priority incidents\n**Reported Metrics:**\n- Contributed to a reported 25% reduction in MTTD\n\n**Security Analyst**\nUNLOX\n**Period:** Nov 2025 – Jan 2026";
+      return { text: "**Security Analyst**\nRedTeam Hacker Academy\n**Period:** May 2026 – Aug 2026\n**Key Activities:**\n- Analyzed 500+ log events weekly\n- Triaged 50+ critical alerts\n- Analyzed 10+ GB of network traffic using Wireshark\n- Escalated 15+ high-priority incidents\n**Reported Metrics:**\n- Contributed to a reported 25% reduction in MTTD\n\n**Security Analyst**\nUNLOX\n**Period:** Nov 2025 – Jan 2026" };
     }
 
     // Github
     if (q.includes("github") || q.includes("repo") || q.includes("code")) {
-      return "You can explore Chandrasekar's practical labs and repositories on his GitHub:\n[View GitHub] - https://github.com/chandru766";
+      return { text: "Chandrasekar's cybersecurity projects and write-ups are available on GitHub.", action: "github" };
     }
 
     // Contact / LinkedIn / Resume
     if (q.includes("contact") || q.includes("email") || q.includes("reach")) {
-      return "You can connect with Chandrasekar via his configured professional contact information.\n\n**LinkedIn:** https://www.linkedin.com/in/chandrasekarcyber/\n\nYou can also use the Terminal Contact form below.";
+      return { text: "You can connect with Chandrasekar via his professional LinkedIn profile, or use the Terminal Contact form below." };
     }
     if (q.includes("linkedin")) {
-      return "[View LinkedIn] - https://www.linkedin.com/in/chandrasekarcyber/\n\nProfessional focus: Security Analyst | SOC Analyst | SIEM | Incident Response | Threat Detection | IOC Analysis | Network Security | VAPT Analyst | IDS/IPS | AI Security";
+      return { text: "You can view Chandrasekar's professional profile on LinkedIn.", action: "linkedin" };
     }
     if (q.includes("resume") || q.includes("cv")) {
-      return "You can view and download Chandrasekar's resume using the **Download Resume** button located at the top of the portfolio.";
+      return { text: "You can view and download Chandrasekar's resume below.", action: "resume" };
+    }
+    if (q.includes("portfolio")) {
+      return { text: "You are currently viewing Chandrasekar's cybersecurity portfolio.", action: "portfolio" };
     }
 
     // Roles / Why Hire
     if (q.includes("role") || q.includes("looking for") || q.includes("why hire") || q.includes("hire")) {
-      return "Chandrasekar is currently focused on cybersecurity opportunities in:\n- SOC / Security Operations\n- Security Analysis\n- VAPT\n- Cybersecurity Analysis\n- AI Security / LLM Security\n\nHis interests combine traditional cybersecurity operations with emerging AI Security.";
+      return { text: "Chandrasekar is currently focused on cybersecurity opportunities in:\n- SOC / Security Operations\n- Security Analysis\n- VAPT\n- Cybersecurity Analysis\n- AI Security / LLM Security\n\nHis interests combine traditional cybersecurity operations with emerging AI Security." };
     }
     
     // Technical fallback
     if (q.includes("prompt injection")) {
-      return "Prompt injection is an attack technique in which an attacker crafts input designed to influence an LLM into ignoring or overriding intended instructions.\n\nIn an AI application, this can potentially lead to unintended actions, sensitive-data exposure, or manipulation of the model's output.\n\nFrom an AI Security perspective, prompt-injection testing is an important part of securing LLM-powered applications.";
+      return { text: "Prompt injection is an attack technique in which an attacker crafts input designed to influence an LLM into ignoring or overriding intended instructions.\n\nIn an AI application, this can potentially lead to unintended actions, sensitive-data exposure, or manipulation of the model's output.\n\nFrom an AI Security perspective, prompt-injection testing is an important part of securing LLM-powered applications." };
     }
 
-    return "I don't have that information in Chandrasekar's portfolio yet.";
+    return { text: "I don't have that information in Chandrasekar's portfolio yet." };
   };
 
   return (
@@ -316,7 +339,7 @@ export function Chatbot() {
                     <div 
                       className={`p-3.5 rounded-2xl text-[13px] leading-relaxed shadow-sm whitespace-pre-wrap ${
                         msg.isBot 
-                          ? "bg-[#0c1322] text-slate-200 rounded-tl-sm border border-cyan-500/10" 
+                          ? "bg-[#0c1322] text-slate-200 rounded-tl-sm border border-cyan-500/10 flex flex-col items-start" 
                           : "bg-cyan-500/20 text-cyan-50 rounded-tr-sm border border-cyan-500/30 backdrop-blur-md"
                       }`}
                     >
@@ -328,7 +351,20 @@ export function Chatbot() {
                           }} 
                         />
                       ) : (
-                        renderFormattedText(msg.text)
+                        <>
+                          {renderFormattedText(msg.text)}
+                          {msg.action && (
+                            <button
+                              onClick={() => window.open(portfolioLinks[msg.action!], "_blank", "noopener,noreferrer")}
+                              className="mt-3 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-xs font-semibold flex items-center transition-colors shadow-[0_0_10px_rgba(0,229,255,0.3)]"
+                            >
+                              {msg.action === "github" && "💻 Open GitHub"}
+                              {msg.action === "linkedin" && "🔗 Open LinkedIn"}
+                              {msg.action === "resume" && "📄 Download Resume"}
+                              {msg.action === "portfolio" && "🌐 Visit Portfolio"}
+                            </button>
+                          )}
+                        </>
                       )}
                     </div>
                   </div>
@@ -345,11 +381,17 @@ export function Chatbot() {
                 >
                   {quickActions.map(action => (
                     <button 
-                      key={action}
-                      onClick={() => handleSend(action)}
+                      key={action.label}
+                      onClick={() => {
+                        if (action.type === "link") {
+                          window.open(portfolioLinks[action.linkKey!], "_blank", "noopener,noreferrer");
+                        } else {
+                          handleSend(action.label);
+                        }
+                      }}
                       className="px-3 py-1.5 text-xs bg-[#0c1322] hover:bg-cyan-900/40 border border-cyan-500/30 hover:border-cyan-400 text-cyan-100 rounded-full transition-all cursor-pointer shadow-sm"
                     >
-                      {action}
+                      {action.label}
                     </button>
                   ))}
                 </motion.div>
