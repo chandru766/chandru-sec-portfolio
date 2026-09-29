@@ -110,20 +110,31 @@ export function Hero() {
           </a>
         </motion.div>
 
-        {/* Animated Robot on the Right */}
+        {/* Animated Platforms on the Right */}
         <motion.div
-          animate={{ y: [0, -15, 0], rotate: [0, 2, -2, 0] }}
-          transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-          className="absolute -right-4 top-40 lg:right-4 lg:top-72 hidden lg:flex items-center justify-center z-20"
+          animate={{ y: [0, 15, 0], rotate: [0, 2, -2, 0] }}
+          transition={{ repeat: Infinity, duration: 6, ease: "easeInOut", delay: 1 }}
+          className="absolute right-0 top-40 lg:right-8 lg:top-72 hidden lg:flex flex-col gap-12 items-center justify-center z-20"
         >
-          <Image 
-            src="/hello-robot.png" 
-            alt="Hello Robot" 
-            width={400} 
-            height={300} 
-            className="w-48 h-auto md:w-[280px] md:h-auto object-contain drop-shadow-[0_0_15px_rgba(0,229,255,0.4)] transition-transform hover:scale-105"
-            priority
-          />
+          <a 
+            href="https://github.com/chandru766" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            title="GitHub"
+            className="p-4 rounded-2xl bg-[#06090e]/80 border border-slate-700/80 hover:border-slate-400/50 hover:bg-slate-800/80 hover:shadow-[0_0_20px_rgba(148,163,184,0.2)] transition-all group backdrop-blur-xl -translate-x-12"
+          >
+            <FaGithub className="w-10 h-10 text-slate-300 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
+          </a>
+          
+          <a 
+            href="https://www.linkedin.com/in/chandrasekarcyber/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            title="LinkedIn" 
+            className="p-4 rounded-2xl bg-[#06090e]/80 border border-slate-700/80 hover:border-blue-500/50 hover:bg-slate-800/80 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] transition-all group backdrop-blur-xl flex flex-col items-center justify-center translate-x-8"
+          >
+            <FaLinkedin className="w-10 h-10 text-slate-300 group-hover:text-blue-500 group-hover:scale-110 transition-all duration-300" />
+          </a>
         </motion.div>
         
         <motion.div

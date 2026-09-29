@@ -14,23 +14,9 @@ const timelineData = [
   },
   {
     type: "education",
-    year: "2021 – 2023",
+    year: "2020 – 2023",
     title: "Diploma in Computer Science and Engineering",
     institution: "JSS Polytechnic, Nanjangud",
-    icon: <GraduationCap className="w-5 h-5 text-cyan-400" />
-  },
-  {
-    type: "education",
-    year: "2018 – 2020",
-    title: "Computer Science",
-    institution: "GHSS HR Sec College Thalavadi, Tamilnadu",
-    icon: <GraduationCap className="w-5 h-5 text-cyan-400" />
-  },
-  {
-    type: "education",
-    year: "2017 – 2018",
-    title: "SSLC",
-    institution: "GRG Memorial HR Sec School Ooty, Tamilnadu",
     icon: <GraduationCap className="w-5 h-5 text-cyan-400" />
   }
 ];
