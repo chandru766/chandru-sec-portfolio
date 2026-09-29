@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, User, Volume2, VolumeX, Mic, MicOff, Activity } from "lucide-react";
+import { X, Send, User } from "lucide-react";
 import Image from "next/image";
 
 type Message = {
@@ -39,17 +39,13 @@ const TypingMessage = ({ text, onComplete }: { text: string; onComplete?: () => 
 
 export function Chatbot() {
   const [chatState, setChatState] = useState<"idle" | "clicked" | "scanning" | "open">("idle");
-  const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
-  const [isListening, setIsListening] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
   
   const [messages, setMessages] = useState<Message[]>([
     { id: "1", text: "Hi! 👋 I'm Chandrasekar's Cybersecurity AI Assistant.\n\nI can help you explore his cybersecurity skills, SOC and VAPT experience, AI Security learning, projects, certifications, and practical labs.\n\nWhat would you like to know?", isBot: true, typingCompleted: false }
   ]);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const recognitionRef = useRef<any>(null);
 
   const quickActions = [
     "👨💻 About Me", "🛡️ Skills", "🚨 SOC", "⚔️ VAPT", "🤖 AI Security", 
@@ -66,31 +62,7 @@ export function Chatbot() {
     }
   }, [messages, chatState, isThinking]);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-      if (SpeechRecognition) {
-        recognitionRef.current = new SpeechRecognition();
-        recognitionRef.current.continuous = false;
-        recognitionRef.current.interimResults = false;
-        recognitionRef.current.lang = 'en-US';
-
-        recognitionRef.current.onresult = (event: any) => {
-          const transcript = event.results[0][0].transcript;
-          handleVoiceInput(transcript);
-        };
-
-        recognitionRef.current.onerror = (event: any) => {
-          console.error("Speech recognition error", event.error);
-          setIsListening(false);
-        };
-
-        recognitionRef.current.onend = () => {
-          setIsListening(false);
-        };
-      }
-    }
-  }, []);
+  // Removed SpeechRecognition useEffect
 
   const handleFabClick = () => {
     setChatState("clicked");
@@ -104,30 +76,9 @@ export function Chatbot() {
 
   const handleClose = () => {
     setChatState("idle");
-    if (typeof window !== "undefined" && "speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-    }
-    setIsSpeaking(false);
   };
 
-  const handleVoiceInput = (text: string) => {
-    setIsListening(false);
-    processMessage(text);
-  };
-
-  const toggleListening = () => {
-    if (isListening) {
-      recognitionRef.current?.stop();
-      setIsListening(false);
-    } else {
-      try {
-        recognitionRef.current?.start();
-        setIsListening(true);
-      } catch (e) {
-        console.error("Could not start speech recognition:", e);
-      }
-    }
-  };
+  // Removed handleVoiceInput and toggleListening
 
   const handleSend = (overrideText?: string) => {
     const textToSend = overrideText || input;
@@ -148,25 +99,10 @@ export function Chatbot() {
       const response = getBotResponse(text);
       const botMessage = { id: (Date.now() + 1).toString(), text: response, isBot: true, typingCompleted: false };
       setMessages(prev => [...prev, botMessage]);
-      speak(response);
     }, 1200);
   };
 
-  const speak = (text: string) => {
-    if (!isVoiceEnabled || typeof window === "undefined" || !("speechSynthesis" in window)) return;
-    
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en-US";
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
-    
-    utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
-
-    window.speechSynthesis.speak(utterance);
-  };
+  // Removed speak function
 
   const getBotResponse = (query: string): string => {
     const q = query.toLowerCase();
@@ -347,26 +283,11 @@ export function Chatbot() {
                 <div className="flex flex-col">
                   <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
                     Chandru AI Assistant
-                    {isSpeaking && (
-                      <div className="flex items-center gap-[2px] h-3">
-                        <motion.div animate={{ height: ["4px", "12px", "4px"] }} transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut", delay: 0 }} className="w-1 bg-cyan-400 rounded-full" />
-                        <motion.div animate={{ height: ["4px", "8px", "4px"] }} transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut", delay: 0.2 }} className="w-1 bg-cyan-400 rounded-full" />
-                        <motion.div animate={{ height: ["4px", "10px", "4px"] }} transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut", delay: 0.4 }} className="w-1 bg-cyan-400 rounded-full" />
-                      </div>
-                    )}
                   </h3>
                   <p className="text-[11px] text-cyan-400/80">Cybersecurity Portfolio Assistant</p>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
-                <button 
-                  onClick={() => setIsVoiceEnabled(!isVoiceEnabled)}
-                  className="text-slate-400 hover:text-cyan-400 transition-colors p-1.5 rounded-md hover:bg-white/5"
-                  title={isVoiceEnabled ? "Mute Voice" : "Enable Voice"}
-                  aria-label={isVoiceEnabled ? "Mute Voice" : "Enable Voice"}
-                >
-                  {isVoiceEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-                </button>
                 <button 
                   onClick={handleClose}
                   className="text-slate-400 hover:text-red-400 transition-colors p-1.5 rounded-md hover:bg-white/5"
@@ -459,36 +380,19 @@ export function Chatbot() {
                 className="flex items-center space-x-2 bg-[#0c1322] border border-cyan-900 rounded-full px-1.5 py-1.5 focus-within:border-cyan-500/50 focus-within:ring-1 focus-within:ring-cyan-500/50 transition-all"
               >
                 <div className="flex-1 px-3">
-                  {isListening ? (
-                    <div className="flex items-center space-x-2 h-9 text-cyan-400 text-sm">
-                      <Activity className="w-4 h-4 animate-pulse" />
-                      <span className="animate-pulse">Listening...</span>
-                    </div>
-                  ) : (
-                    <input 
-                      type="text" 
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      placeholder="Type your question..."
-                      className="w-full bg-transparent text-slate-200 text-sm focus:outline-none placeholder-slate-500 h-9"
-                      disabled={isThinking}
-                    />
-                  )}
+                  <input 
+                    type="text" 
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Type your question..."
+                    className="w-full bg-transparent text-slate-200 text-sm focus:outline-none placeholder-slate-500 h-9"
+                    disabled={isThinking}
+                  />
                 </div>
                 
-                <button
-                  type="button"
-                  onClick={toggleListening}
-                  className={`p-2 rounded-full transition-colors flex items-center justify-center shrink-0 ${isListening ? 'bg-cyan-500/20 text-cyan-400' : 'text-slate-400 hover:text-cyan-400 hover:bg-white/5'}`}
-                  title={isListening ? "Stop listening" : "Start voice input"}
-                  aria-label="Voice Input"
-                  disabled={isThinking}
-                >
-                  {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-                </button>
                 <button 
                   type="submit"
-                  disabled={(!input.trim() && !isListening) || isThinking}
+                  disabled={!input.trim() || isThinking}
                   className="p-2 bg-cyan-500 hover:bg-cyan-400 disabled:bg-slate-800 disabled:text-slate-500 text-[#06090e] rounded-full transition-colors flex items-center justify-center shrink-0"
                   aria-label="Send Message"
                 >
