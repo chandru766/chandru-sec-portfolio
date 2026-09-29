@@ -8,6 +8,7 @@ type Message = {
   id: string;
   text: string;
   isBot: boolean;
+  typingCompleted?: boolean;
 };
 
 const renderFormattedText = (text: string) => {
@@ -41,11 +42,10 @@ export function Chatbot() {
   const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
   const [isListening, setIsListening] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   
   const [messages, setMessages] = useState<Message[]>([
-    { id: "1", text: "Hi! 👋 I'm Chandrasekar's Cybersecurity AI Assistant.\n\nI can help you explore his cybersecurity skills, SOC and VAPT experience, AI Security learning, projects, certifications, and practical labs.\n\nWhat would you like to know?", isBot: true }
+    { id: "1", text: "Hi! 👋 I'm Chandrasekar's Cybersecurity AI Assistant.\n\nI can help you explore his cybersecurity skills, SOC and VAPT experience, AI Security learning, projects, certifications, and practical labs.\n\nWhat would you like to know?", isBot: true, typingCompleted: false }
   ]);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -146,9 +146,8 @@ export function Chatbot() {
     setTimeout(() => {
       setIsThinking(false);
       const response = getBotResponse(text);
-      const botMessage = { id: (Date.now() + 1).toString(), text: response, isBot: true };
+      const botMessage = { id: (Date.now() + 1).toString(), text: response, isBot: true, typingCompleted: false };
       setMessages(prev => [...prev, botMessage]);
-      setIsTyping(true);
       speak(response);
     }, 1200);
   };
@@ -380,7 +379,7 @@ export function Chatbot() {
 
             {/* Messages Area */}
             <div className="flex-1 overflow-y-auto p-5 space-y-5 scrollbar-thin scrollbar-thumb-cyan-900 scrollbar-track-transparent">
-              {messages.map((msg, index) => (
+              {messages.map((msg) => (
                 <div 
                   key={msg.id} 
                   className={`flex ${msg.isBot ? "justify-start" : "justify-end"}`}
@@ -400,8 +399,13 @@ export function Chatbot() {
                           : "bg-cyan-500/20 text-cyan-50 rounded-tr-sm border border-cyan-500/30 backdrop-blur-md"
                       }`}
                     >
-                      {msg.isBot && index === messages.length - 1 ? (
-                        <TypingMessage text={msg.text} onComplete={() => setIsTyping(false)} />
+                      {msg.isBot && !msg.typingCompleted ? (
+                        <TypingMessage 
+                          text={msg.text} 
+                          onComplete={() => {
+                            setMessages(prev => prev.map(m => m.id === msg.id ? { ...m, typingCompleted: true } : m));
+                          }} 
+                        />
                       ) : (
                         renderFormattedText(msg.text)
                       )}
@@ -411,7 +415,7 @@ export function Chatbot() {
               ))}
               
               {/* Quick Actions */}
-              {!isThinking && !isTyping && (
+              {!isThinking && !(messages[messages.length - 1]?.isBot && !messages[messages.length - 1]?.typingCompleted) && (
                 <motion.div 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
