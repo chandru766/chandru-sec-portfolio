@@ -12,6 +12,7 @@ type Message = {
   isBot: boolean;
   typingCompleted?: boolean;
   action?: MessageAction;
+  actions?: MessageAction[];
 };
 
 const portfolioLinks = {
@@ -116,15 +117,15 @@ export function Chatbot() {
     // Simulate thinking delay
     setTimeout(() => {
       setIsThinking(false);
-      const { text: responseText, action } = getBotResponse(text);
-      const botMessage = { id: (Date.now() + 1).toString(), text: responseText, isBot: true, typingCompleted: false, action };
+      const { text: responseText, action, actions } = getBotResponse(text);
+      const botMessage = { id: (Date.now() + 1).toString(), text: responseText, isBot: true, typingCompleted: false, action, actions };
       setMessages(prev => [...prev, botMessage]);
     }, 1200);
   };
 
   // Removed speak function
 
-  const getBotResponse = (query: string): { text: string; action?: MessageAction } => {
+  const getBotResponse = (query: string): { text: string; action?: MessageAction; actions?: MessageAction[] } => {
     const q = query.toLowerCase();
     
     // About Me
@@ -179,7 +180,10 @@ export function Chatbot() {
 
     // Contact / LinkedIn / Resume
     if (q.includes("contact") || q.includes("email") || q.includes("reach")) {
-      return { text: "You can connect with Chandrasekar via his professional LinkedIn profile, or use the Terminal Contact form below." };
+      return { 
+        text: "You can connect with Chandrasekar via his professional network, or use the Terminal Contact form below.", 
+        actions: ["linkedin", "github"] 
+      };
     }
     if (q.includes("linkedin")) {
       return { text: "You can view Chandrasekar's professional profile on LinkedIn.", action: "linkedin" };
@@ -353,16 +357,21 @@ export function Chatbot() {
                       ) : (
                         <>
                           {renderFormattedText(msg.text)}
-                          {msg.action && (
-                            <button
-                              onClick={() => window.open(portfolioLinks[msg.action!], "_blank", "noopener,noreferrer")}
-                              className="mt-3 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-xs font-semibold flex items-center transition-colors shadow-[0_0_10px_rgba(0,229,255,0.3)]"
-                            >
-                              {msg.action === "github" && "💻 Open GitHub"}
-                              {msg.action === "linkedin" && "🔗 Open LinkedIn"}
-                              {msg.action === "resume" && "📄 Download Resume"}
-                              {msg.action === "portfolio" && "🌐 Visit Portfolio"}
-                            </button>
+                          {(msg.action || msg.actions) && (
+                            <div className="flex flex-col gap-2 mt-3 w-full items-start">
+                              {(msg.actions || (msg.action ? [msg.action] : [])).map((a) => (
+                                <button
+                                  key={a}
+                                  onClick={() => window.open(portfolioLinks[a], "_blank", "noopener,noreferrer")}
+                                  className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-xs font-semibold flex items-center transition-colors shadow-[0_0_10px_rgba(0,229,255,0.3)]"
+                                >
+                                  {a === "github" && "💻 Open GitHub"}
+                                  {a === "linkedin" && "🔗 Open LinkedIn"}
+                                  {a === "resume" && "📄 Download Resume"}
+                                  {a === "portfolio" && "🌐 Visit Portfolio"}
+                                </button>
+                              ))}
+                            </div>
                           )}
                         </>
                       )}
