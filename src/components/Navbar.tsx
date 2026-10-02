@@ -28,7 +28,7 @@ export function Navbar() {
   return (
     <nav className="fixed top-6 inset-x-0 z-50 flex justify-center px-4">
       <div 
-        className={`relative flex items-center justify-between gap-6 px-8 py-3.5 rounded-full transition-all duration-300 w-[95%] md:w-[760px] lg:w-[900px] shadow-lg ${
+        className={`relative flex items-center justify-between gap-6 px-8 py-3.5 rounded-full transition-all duration-300 w-[95%] md:w-[860px] lg:w-[1000px] shadow-lg ${
           scrolled 
             ? "bg-[#070b14]/90 border border-slate-700/80 backdrop-blur-xl" 
             : "bg-[#090d16]/75 border border-slate-800/80 backdrop-blur-md"
@@ -48,12 +48,12 @@ export function Navbar() {
         </Link>
         
         {/* Center Nav Links (Desktop) */}
-        <div className="hidden md:flex items-center justify-center gap-8 md:gap-12">
+        <div className="hidden md:flex items-center justify-center gap-6 md:gap-8 lg:gap-10">
           {navLinks.map((link) => (
             <Link 
               key={link.label} 
               href={link.href} 
-              className="text-slate-400 hover:text-white text-sm font-medium transition-colors duration-200"
+              className="text-slate-400 hover:text-white text-sm font-medium transition-colors duration-200 whitespace-nowrap"
               {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
             >
               {link.label}
