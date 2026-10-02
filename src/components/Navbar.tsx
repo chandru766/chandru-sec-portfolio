@@ -22,6 +22,7 @@ export function Navbar() {
     { label: "Arsenal", href: "#arsenal" },
     { label: "Certs", href: "#certifications" },
     { label: "Education", href: "#timeline" },
+    { label: "AI-Security-Lab", href: "https://github.com/chandru766/ai-security-lab" },
   ];
 
   return (
@@ -53,6 +54,7 @@ export function Navbar() {
               key={link.label} 
               href={link.href} 
               className="text-slate-400 hover:text-white text-sm font-medium transition-colors duration-200"
+              {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
             >
               {link.label}
             </Link>
@@ -98,6 +100,7 @@ export function Navbar() {
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className="text-slate-400 hover:text-white text-sm font-medium px-4 py-2 hover:bg-slate-800/50 rounded-lg transition-colors"
+                  {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 >
                   {link.label}
                 </Link>
