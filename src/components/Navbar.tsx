@@ -22,7 +22,7 @@ export function Navbar() {
     { label: "Arsenal", href: "#arsenal" },
     { label: "Certs", href: "#certifications" },
     { label: "Education", href: "#timeline" },
-    { label: "AI-Security-Lab", href: "https://github.com/chandru766/ai-security-lab" },
+    { label: "AI-Security-Lab", href: "https://ai-security-lab-sooty.vercel.app/" },
   ];
 
   return (
